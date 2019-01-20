@@ -1,0 +1,256 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <title>Кредитен калкулатор</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js"></script>
+    <style>
+
+        .hidden {
+            visibility: hidden;
+        }
+
+        .table div.row:nth-child(even) {
+            background-color: #DDD;
+        }
+
+        .table div.row:nth-child(odd) {
+            background-color: #AAA;
+        }
+
+    </style>
+    <script>
+        $(document).ready(function () {
+
+            $('#creditSize').val(1000);
+            $('#creditTerm').val(12);
+            $('#creditInterest').val(10);
+            $('#creditPaymentType').val(1);
+
+            console.log($('.table').children());
+
+
+            $('#calculate').on('click', function () {
+                var creditInfo = getCreditInfo();
+
+                $.ajax({
+                    url: 'v1/Calculate',
+                    dataType: 'json',
+                    type: 'post',
+                    contentType: 'application/json',
+                    data: JSON.stringify(creditInfo),
+                    processData: false,
+                    success: function (data, textStatus, jQxhr) {
+                        $('#annualInterestRate').text(data.annualInterestRate);
+                        $('#total').text(data.total);
+                        $('#feesAndcommissions').text(data.feesAndcommissions);
+                        $('#interestAmount').text(data.interestAmount);
+                        $('#paymentsTotal').text(data.paymentsTotal);
+                        $('#payments').html($('#paymentsHeader').html());
+                        $('#paymentHeaderDate').html(new Date().toLocaleDateString("bg-BG"));
+                        $('#paymentHeaderTotal').html($('#creditSize').val());
+                        $('#paymentHeaderFeesAndCommisions').html("0.00");
+                        $('#paymentHeaderCashFlow').html($('#creditSize').val());
+                        for (var i in data.payments) {
+                            $('#payments').append($('#paymentsRow').html());
+                            var row = $('#payments').find('.paymentRow').last();
+                            var payment = data.payments[i];
+                            row.find('#paymentRowNumber').html(parseInt(i) + 1);
+                            row.find('#paymentRowDate').html(new Date(payment.date).toLocaleDateString("bg-BG"));
+                            row.find('#paymentRowMonthlyPayment').html(payment.monthlyPayment);
+                            row.find('#paymentRowPrincipalPayment').html(payment.principalPayment);
+                            row.find('#paymentRowInterestPayment').html(payment.interestPayment);
+                            row.find('#paymentRowPrincipalLeft').html(payment.principalLeft);
+                            row.find('#paymentRowFeesAndcommissions').html(payment.feesAndcommissions);
+                            row.find('#paymentRowCashFlow').html(payment.cashFlow);
+                        }
+
+                        $('#payments').addClass('table');
+
+                    },
+                    error: function (jqXhr, textStatus, errorThrown) {
+                        console.log(errorThrown);
+                    }
+                });
+                
+            });
+
+            function getCreditInfo() {
+                var creditInfo = {};
+                $('.creditInfo').each(function (i, elem) {
+                    creditInfo[$(elem).attr('name')] = $(elem).val();
+                })
+                return creditInfo;
+            }
+
+        });
+    </script>
+
+</head>
+<body>
+    <div class="container">
+        <div class="row">
+            <div class="col-md-3">
+                <input id="creditSize" name="Size" class="form-control creditInfo" placeholder="Размер на кредита*" />
+            </div>
+            <div class="col-md-3">
+                <input id="creditTerm" name="Term" class="form-control creditInfo" placeholder="Срок (месеци)*" />
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-3">
+                <input id="creditInterest" name="Interest" class="form-control creditInfo" placeholder="Лихва (%)*" />
+            </div>
+            <div class="col-md-3">
+                <select id="creditPaymentType" name="PaymentType" class="form-control creditInfo">
+                    <option selected value="0">Изберете</option>
+                    <option value="1">Анюитетни вноски</option>
+                    <option value="2">Намаляващи вноски</option>
+                </select>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-6">
+                <button id="calculate" name="calculate" class="btn btn-primary" style="float: right;">Изчисли</button>
+            </div>
+        </div>
+        <hr />
+        <div class="row">
+            <div class="col-3">
+                <span class="at-title">ГОДИШЕН ПРОЦЕНТЕН РАЗХОД:</span>
+            </div>
+            <div class="col-md-3">
+                <span id="annualInterestRate" class="at-info"></span>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-3">
+                <span class="at-title">ПОГАСЕНИ С ЛИХВИ И ТАКСИ:</span>
+            </div>
+            <div class="col-md-3">
+                <span id="total" class="at-info"></span>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-md-3">
+                <span class="at-title">ТАКСИ И КОМИСИОННИ:</span>
+            </div>
+            <div class="col-md-3">
+                <span id="feesAndCommissions" class="at-info"></span>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-3">
+                <div class="at-info has-toolbar">
+                    <span class="at-title">ЛИХВИ:</span>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <span id="interestAmount" class="at-info"></span>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-3">
+                <div class="at-info has-toolbar">
+                    <span class="at-title">ВНОСКИ:</span>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <span id="paymentsTotal" class="at-info"></span>
+            </div>
+        </div>
+    </div>
+    <hr />
+    <div class="row">
+        <div class="col-md-2">
+        </div>
+        <div class="col-md-10">
+            <div id="payments">
+
+            </div>
+        </div>
+    </div>
+    </div>
+    <div id="paymentsHeader" class="hidden">
+        <div class="row">
+            <div class="col-md-1">
+                №
+            </div>
+            <div class="col-md-1">
+                Дата
+            </div>
+            <div class="col-md-1">
+                Месечна вноска
+            </div>
+            <div class="col-md-1">
+                Вноска главница
+            </div>
+            <div class="col-md-1">
+                Вноска лихва
+            </div>
+            <div class="col-md-1">
+                Остатък главница
+            </div>
+            <div class="col-md-1">
+                Такси и комисионни
+            </div>
+            <div class="col-md-1">
+                Паричен поток
+            </div>
+            <div class="col-md-4" style="background-color: white">
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-1">
+                0
+            </div>
+            <div id="paymentHeaderDate" class="col-md-1">
+            </div>
+            <div class="col-md-1">
+                0.00
+            </div>
+            <div class="col-md-1">
+                0.00
+            </div>
+            <div class="col-md-1">
+                0.00
+            </div>
+            <div id="paymentHeaderTotal" class="col-md-1">
+            </div>
+            <div id="paymentHeaderFeesAndCommisions" class="col-md-1">
+            </div>
+            <div id="paymentHeaderCashFlow" class="col-md-1">
+            </div>
+            <div class="col-md-4" style="background-color: white">
+            </div>
+        </div>
+    </div>
+
+    <div id="paymentsRow" class="hidden">
+        <div class="paymentRow row">
+            <div id="paymentRowNumber" class="col-md-1">
+            </div>
+            <div id="paymentRowDate" class="col-md-1">
+            </div>
+            <div id="paymentRowMonthlyPayment" class="col-md-1">
+            </div>
+            <div id="paymentRowPrincipalPayment" class="col-md-1">
+            </div>
+            <div id="paymentRowInterestPayment" class="col-md-1">
+            </div>
+            <div id="paymentRowPrincipalLeft" class="col-md-1">
+            </div>
+            <div id="paymentRowFeesAndcommissions" class="col-md-1">
+            </div>
+            <div id="paymentRowCashFlow" class="col-md-1">
+            </div>
+            <div class="col-md-4" style="background-color: white">
+            </div>
+        </div>
+    </div>
+</body>
+</html>

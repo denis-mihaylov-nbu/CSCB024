@@ -1,0 +1,14 @@
+D:\NBU\CSCB024\CreditCalculator\CreditCalculator\bin\Debug\netcoreapp2.1\CreditCalculator.deps.json
+D:\NBU\CSCB024\CreditCalculator\CreditCalculator\bin\Debug\netcoreapp2.1\CreditCalculator.runtimeconfig.json
+D:\NBU\CSCB024\CreditCalculator\CreditCalculator\bin\Debug\netcoreapp2.1\CreditCalculator.runtimeconfig.dev.json
+D:\NBU\CSCB024\CreditCalculator\CreditCalculator\bin\Debug\netcoreapp2.1\CreditCalculator.dll
+D:\NBU\CSCB024\CreditCalculator\CreditCalculator\obj\Debug\netcoreapp2.1\CreditCalculator.csprojAssemblyReference.cache
+D:\NBU\CSCB024\CreditCalculator\CreditCalculator\obj\Debug\netcoreapp2.1\CreditCalculator.csproj.CoreCompileInputs.cache
+D:\NBU\CSCB024\CreditCalculator\CreditCalculator\obj\Debug\netcoreapp2.1\CreditCalculator.RazorAssemblyInfo.cache
+D:\NBU\CSCB024\CreditCalculator\CreditCalculator\obj\Debug\netcoreapp2.1\CreditCalculator.RazorAssemblyInfo.cs
+D:\NBU\CSCB024\CreditCalculator\CreditCalculator\obj\Debug\netcoreapp2.1\CreditCalculator.AssemblyInfoInputs.cache
+D:\NBU\CSCB024\CreditCalculator\CreditCalculator\obj\Debug\netcoreapp2.1\CreditCalculator.AssemblyInfo.cs
+D:\NBU\CSCB024\CreditCalculator\CreditCalculator\obj\Debug\netcoreapp2.1\CreditCalculator.RazorTargetAssemblyInfo.cache
+D:\NBU\CSCB024\CreditCalculator\CreditCalculator\bin\Debug\netcoreapp2.1\CreditCalculator.pdb
+D:\NBU\CSCB024\CreditCalculator\CreditCalculator\obj\Debug\netcoreapp2.1\CreditCalculator.dll
+D:\NBU\CSCB024\CreditCalculator\CreditCalculator\obj\Debug\netcoreapp2.1\CreditCalculator.pdb
